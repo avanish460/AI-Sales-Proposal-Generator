@@ -1,0 +1,29 @@
+[
+  {
+    "lead_info": {
+      "name": "WealthAxis Capital",
+      "industry": "Fintech",
+      "estimated_value": "$300,000 – $300,000",
+      "budget_num": 300000,
+      "status": "Proposal Sent",
+      "added_at": "2026-03-07 19:02"
+    },
+    "proposal_metadata": {
+      "generated_at": "2026-03-07",
+      "summary": "WealthAxis Capital is currently burdened by a 7-day KYC verification process, significant analyst time wasted on manual report generation, and a reactive fraud detection system leading to substantial ...",
+      "roi": 222,
+      "payback": 7
+    },
+    "follow_up_email": {
+      "subject": "Following Up: WealthAxis Capital Proposal - Accelerating Growth",
+      "body": "Subject: Following Up: WealthAxis Capital Proposal - Accelerating Growth\n\nHi [Client Name],\n\nHope this email finds you well.\n\nI'm following up on the proposal we recently shared for WealthAxis Capital. We understand the critical impact of lengthy KYC verification on high-value leads and the analyst time spent on manual reporting.\n\nOur solution is designed to directly address these challenges, offering significant efficiency gains and lead retention. As detailed, we project a rapid payback period of just 7 months, ensuring a swift return on your investment.\n\nI'd appreciate the opportunity to schedule a brief 30-minute discovery call this week to answer any questions and further explore how we can help WealthAxis Capital accelerate its growth.\n\nBest regards,\n[Your Name]",
+      "status": "Draft — Not Sent"
+    },
+    "deal": {
+      "stage": "Proposal Sent",
+      "probability": 55,
+      "weighted_value": 165000,
+      "next_action": "Follow-up in 3 days"
+    }
+  }
+]

@@ -1,6 +1,6 @@
 """
 rag_engine.py  —  FAISS Vector Store + Embedding Engine
-Handles: Embed text → Store in FAISS → Similarity search
+Handles: Embed text → Store in FAISS → Similarity search → Persist
 """
 
 import os
@@ -20,10 +20,10 @@ except ImportError:
     RAG_AVAILABLE = False
     print("[WARNING] Run: pip install faiss-cpu sentence-transformers")
 
-# ── Config from .env ──────────────────────────────────────────────────────────
+# ── Config ────────────────────────────────────────────────────────────────────
 EMBED_MODEL = os.getenv("EMBED_MODEL", "all-MiniLM-L6-v2")
 EMBED_DIM   = 384
-INDEX_PATH  = os.getenv("FAISS_INDEX_PATH", "data/faiss.index")
+INDEX_PATH  = os.getenv("FAISS_INDEX_PATH",   "data/faiss.index")
 STORE_PATH  = os.getenv("PROPOSAL_STORE_PATH", "data/proposal_store.pkl")
 TOP_K       = int(os.getenv("RAG_TOP_K", 3))
 
@@ -127,10 +127,25 @@ class RAGEngine:
         with open(self.store_path, "wb") as f:
             pickle.dump(self.store, f)
 
+    # ── Stats ─────────────────────────────────────────────────────────────────
     def stats(self) -> dict:
+        industries = {}
+        for entry in self.store:
+            ind = entry["metadata"].get("industry", "Unknown")
+            industries[ind] = industries.get(ind, 0) + 1
+
         return {
             "total_proposals": len(self.store),
             "embed_model":     EMBED_MODEL,
             "embed_dim":       EMBED_DIM,
             "index_type":      type(self.index).__name__,
+            "by_industry":     industries,
         }
+
+    # ── Clear ─────────────────────────────────────────────────────────────────
+    def clear(self):
+        """Reset the FAISS index and store."""
+        self.index = faiss.IndexFlatL2(EMBED_DIM)
+        self.store = []
+        self._persist()
+        print("[RAG] Index cleared.")
