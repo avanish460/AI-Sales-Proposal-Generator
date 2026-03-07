@@ -1,0 +1,33 @@
+# ============================================================
+#   AI Sales Intelligence Platform — Environment Variables
+#   Copy this file, fill in your values, save as .env
+#   Command: cp .env.example .env
+# ============================================================
+
+# ── GEMINI API KEY (Required) ────────────────────────────────
+
+GEMINI_API_KEY=your-api-key
+
+# ── GEMINI MODEL (Optional — defaults to gemini-2.5-flash) ──
+# Options: gemini-2.5-flash | gemini-2.5-pro | gemini-2.0-flash
+GEMINI_MODEL=gemini-2.5-flash
+
+# ── APP SETTINGS ─────────────────────────────────────────────
+APP_NAME=AI Sales Intelligence Platform
+APP_VERSION=2.0.0
+
+# ── RAG SETTINGS ─────────────────────────────────────────────
+# How many similar proposals to retrieve from FAISS
+RAG_TOP_K=3
+
+# Path to store FAISS index and proposal metadata
+FAISS_INDEX_PATH=data/faiss.index
+PROPOSAL_STORE_PATH=data/proposal_store.pkl
+
+# ── OUTPUT SETTINGS ──────────────────────────────────────────
+# Where to save generated proposal JSON files
+OUTPUT_DIR=output
+
+# ── EMBEDDING MODEL ──────────────────────────────────────────
+# Local model — no API key needed, downloads automatically (~80MB)
+EMBED_MODEL=all-MiniLM-L6-v2
