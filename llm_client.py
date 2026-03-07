@@ -19,10 +19,10 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[WARNING] Run: pip install google-genai")
 
-# ── Config from .env ──────────────────────────────────────────────────────────
-GEMINI_MODEL  = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-MAX_TOKENS    = 8192
-TEMPERATURE   = 1.0   # Gemini 2.5 requires temperature=1 for thinking models
+# ── Config ────────────────────────────────────────────────────────────────────
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+MAX_TOKENS   = 8192
+TEMPERATURE  = 1.0   # Gemini 2.5 requires temperature=1 for thinking models
 
 SYSTEM_PROMPT = """You are an elite AI Sales Intelligence Assistant.
 You generate highly personalized, data-driven sales proposals using past successful proposals as reference.
@@ -40,7 +40,6 @@ STRICT RULES:
 def build_rag_prompt(client_data: dict, similar_proposals: list) -> str:
     """Builds RAG-augmented prompt by injecting retrieved context."""
 
-    # Format retrieved context
     context_block = ""
     if similar_proposals:
         context_block = "\n\n## RETRIEVED SIMILAR PROPOSALS (Use as strategic reference)\n"
@@ -60,13 +59,13 @@ Summary   : {p['text'][:600]}
     prompt = f"""{context_block}
 
 ## NEW CLIENT DETAILS
-Company       : {client_data.get('company_name', 'Client')}
-Industry      : {client_data.get('industry', 'Technology')}
-Problem       : {client_data.get('problem_statement', '')}
-Goals         : {client_data.get('goals', '')}
-Budget Range  : ${client_data.get('budget_min', 50000):,} – ${client_data.get('budget_max', 500000):,}
-Timeline      : {client_data.get('timeline_months', 12)} months
-Team Size     : {client_data.get('team_size', 50)} employees
+Company        : {client_data.get('company_name', 'Client')}
+Industry       : {client_data.get('industry', 'Technology')}
+Problem        : {client_data.get('problem_statement', '')}
+Goals          : {client_data.get('goals', '')}
+Budget Range   : ${client_data.get('budget_min', 50000):,} – ${client_data.get('budget_max', 500000):,}
+Timeline       : {client_data.get('timeline_months', 12)} months
+Team Size      : {client_data.get('team_size', 50)} employees
 Current Revenue: ${client_data.get('current_revenue', 0):,}/year
 
 ## TASK
@@ -75,7 +74,7 @@ Generate a complete, personalized sales proposal as a single JSON object with th
 {{
   "executive_summary": "3-4 sentences, specific to their industry and problems",
   "problem_analysis": {{
-    "primary_challenges": ["challenge 1", "challenge 2", "challenge 3"],
+    "primary_challenges": ["challenge 1 with specific cost impact", "challenge 2 with metric", "challenge 3"],
     "revenue_impact": "Estimated annual revenue loss e.g. $500,000/year"
   }},
   "proposed_solution": {{
@@ -102,9 +101,9 @@ Generate a complete, personalized sales proposal as a single JSON object with th
     ]
   }},
   "budget_allocation": {{
-    "marketing": 35,
-    "technology": 30,
-    "operations": 20,
+    "technology": 35,
+    "operations": 25,
+    "marketing": 25,
     "hr": 15
   }},
   "monthly_revenue_projection": [28000, 38000, 52000, 71000, 90000, 108000, 122000, 138000, 152000, 163000, 180000, 195000],
@@ -112,24 +111,44 @@ Generate a complete, personalized sales proposal as a single JSON object with th
   "roi_percentage": 179,
   "payback_period_months": 6,
   "why_us": [
-    "Point 1 specific to client industry",
-    "Point 2 with a concrete metric",
-    "Point 3 about risk reduction"
+    "Point 1 specific to client industry with a concrete metric",
+    "Point 2 about technical capability relevant to their problem",
+    "Point 3 about risk reduction or guarantee"
   ],
-  "next_steps": "Specific call to action with a date"
+  "next_steps": "Specific call to action with a concrete date or timeline"
 }}
 
-IMPORTANT: Customize ALL values above to match the client's industry, budget range, and goals.
+IMPORTANT: Customize ALL values to match the client's industry, budget range, and goals.
 Return ONLY the JSON object. Nothing else."""
 
     return prompt
 
 
+def build_email_prompt(client_data: dict, proposal: dict) -> str:
+    """Builds follow-up email prompt using generated proposal data."""
+    return f"""Write a short, professional follow-up sales email for this proposal.
+
+Client      : {client_data.get('company_name')}
+Industry    : {client_data.get('industry')}
+Key Problem : {client_data.get('problem_statement', '')[:120]}
+ROI         : {proposal.get('roi_percentage', 'N/A')}%
+Investment  : ${proposal.get('total_investment', 0):,}
+Payback     : {proposal.get('payback_period_months', 'N/A')} months
+
+Rules:
+- FIRST LINE must be exactly: Subject: [your subject line here]
+- Under 160 words total
+- Warm but professional tone
+- Reference ONE specific number from the proposal (ROI or payback)
+- Clear CTA: schedule a 30-min discovery call this week
+- End with: Best regards, [Your Name]
+
+Write ONLY the email. No explanation, no extra text."""
+
+
 # ── GeminiClient ──────────────────────────────────────────────────────────────
 class GeminiClient:
-    """
-    Google Gemini API wrapper with retry logic and error-safe JSON extraction.
-    """
+    """Google Gemini API wrapper with retry logic and error-safe JSON extraction."""
 
     def __init__(self, api_key: Optional[str] = None):
         if not GEMINI_AVAILABLE:
@@ -147,9 +166,10 @@ class GeminiClient:
         print(f"[LLM] Gemini client ready — model: {self.model}")
 
     # ── Generate ──────────────────────────────────────────────────────────────
-    def generate(self, prompt: str, max_retries: int = 3) -> str:
+    def generate(self, prompt: str, max_retries: int = 3,
+                 use_system: bool = True) -> str:
         """Call Gemini API with exponential backoff on errors."""
-        full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}"
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}" if use_system else prompt
 
         for attempt in range(1, max_retries + 1):
             try:
@@ -168,28 +188,28 @@ class GeminiClient:
                     print(f"[LLM] Rate limit hit. Waiting {wait}s...")
                     time.sleep(wait)
                 elif attempt == max_retries:
-                    raise RuntimeError(f"Gemini API failed: {e}")
+                    raise RuntimeError(f"Gemini API failed after {max_retries} attempts: {e}")
                 else:
-                    print(f"[LLM] Attempt {attempt} failed: {e}. Retrying...")
+                    print(f"[LLM] Attempt {attempt} failed: {e}. Retrying in 2s...")
                     time.sleep(2)
 
         raise RuntimeError(f"Gemini API failed after {max_retries} attempts.")
 
-    # ── Error-safe JSON Extraction ────────────────────────────────────────────
+    # ── JSON Extraction ───────────────────────────────────────────────────────
     @staticmethod
     def extract_json(raw: str) -> dict:
         """
         Robustly extract JSON from LLM output.
-        Handles: markdown fences, leading text, trailing comments, common errors.
+        Handles: markdown fences, leading text, trailing comments.
         """
-        # 1. Strip markdown code fences
+        # 1. Strip markdown fences
         raw = re.sub(r"```(?:json)?", "", raw).strip()
         raw = re.sub(r"```", "", raw).strip()
 
         # 2. Find first opening brace
         start = raw.find("{")
         if start == -1:
-            raise ValueError(f"No JSON found in response. Raw: {raw[:200]}")
+            raise ValueError(f"No JSON object found in response. Raw preview: {raw[:200]}")
 
         # 3. Find matching closing brace
         depth, end = 0, -1
@@ -208,9 +228,9 @@ class GeminiClient:
         json_str = raw[start:end]
 
         # 4. Fix common LLM JSON mistakes
-        json_str = re.sub(r",\s*([}\]])", r"\1", json_str)       # trailing commas
-        json_str = re.sub(r"//[^\n]*", "", json_str)              # JS comments
-        json_str = re.sub(r"/\*.*?\*/", "", json_str, flags=re.S) # block comments
+        json_str = re.sub(r",\s*([}\]])", r"\1", json_str)        # trailing commas
+        json_str = re.sub(r"//[^\n]*", "", json_str)               # JS comments
+        json_str = re.sub(r"/\*.*?\*/", "", json_str, flags=re.S)  # block comments
 
         try:
             return json.loads(json_str)
