@@ -2,90 +2,27 @@
   {
     "lead_info": {
       "name": "WealthAxis Capital",
-      "industry": "Finance",
-      "estimated_value": "$30 –$60k",
+      "industry": "Fintech",
+      "estimated_value": "$300,000 – $300,000",
+      "budget_num": 300000,
       "status": "Proposal Sent",
-      "budget_num": 30015,
-      "added_at": "2026-02-21 20:35"
+      "added_at": "2026-03-07 19:02"
     },
     "proposal_metadata": {
-      "generated_at": "2026-02-21",
-      "summary": "## Executive Summary\nThis proposal outlines a transformative AI-driven solution for WealthAxis Capital designed to address critical operational inefficiencies, enhance client acquisition, and standardize risk assessment. By automating tedious manual processes and leveraging advanced artificial intel...",
-      "file_type": "PDF"
-    },
-    "deal": {
-      "stage": "Proposal Sent",
-      "probability": 55,
-      "weighted_value": 16508,
-      "next_action": "Follow-up in 3 days"
-    }
-  },
-  {
-    "lead_info": {
-      "name": "MediCare Plus Clinics",
-      "industry": "Healthcare",
-      "estimated_value": "$20k–$35k",
-      "status": "Proposal Sent",
-      "budget_num": 27500,
-      "added_at": "2026-02-21 18:30"
-    },
-    "proposal_metadata": {
-      "generated_at": "2026-02-21",
-      "summary": "## Executive Summary\nMediCare Plus Clinics faces significant operational inefficiencies due to manual documentation, high patient no-show rates, and delayed referral processes. Our AI-powered solution will streamline clinical workflows, drastically reduce administrative burdens, and enhance patient ...",
-      "file_type": "PDF"
-    },
-    "deal": {
-      "stage": "Proposal Sent",
-      "probability": 55,
-      "weighted_value": 15125,
-      "next_action": "Follow-up in 3 days"
-    }
-  },
-  {
-    "lead_info": {
-      "name": "NestFinder Realty Group",
-      "industry": "Real Estate",
-      "estimated_value": "$12k–$20k",
-      "status": "Proposal Sent",
-      "budget_num": 16000,
-      "added_at": "2026-02-21 17:26"
-    },
-    "proposal_metadata": {
-      "generated_at": "2026-02-21",
-      "summary": "## Executive Summary\n\nNestFinder Realty Group is at a pivotal point to revolutionize its operational efficiency and client engagement. This proposal outlines an advanced AI-powered solution designed to eliminate manual burdens, dramatically accelerate lead response times, and implement precision buy...",
-      "file_type": "PDF"
-    },
-    "deal": {
-      "stage": "Proposal Sent",
-      "probability": 55,
-      "weighted_value": 8800,
-      "next_action": "Follow-up in 3 days"
-    }
-  },
-  {
-    "lead_info": {
-      "name": "Avanish Dubey",
-      "industry": "EdTech",
-      "estimated_value": "$5k-$10k",
-      "status": "Closed Lost",
-      "budget_num": 7500,
-      "added_at": "2026-02-21 15:49"
-    },
-    "proposal_metadata": {
-      "generated_at": "2026-02-21",
-      "summary": "## Executive Summary\nThis proposal outlines a strategic partnership to revolutionize student engagement and learning outcomes by deploying cutting-edge AI. We will transform your current 18% course completion rate into a thriving 60% by implementing personalized learning paths and automating feedbac...",
-      "file_type": "PDF",
-      "full_proposal": "## Executive Summary\nThis proposal outlines a strategic partnership to revolutionize student engagement and learning outcomes by deploying cutting-edge AI. We will transform your current 18% course completion rate into a thriving 60% by implementing personalized learning paths and automating feedback processes, thereby enhancing efficiency and student success.\n\n## Problem Statement\nAvanish Dubey, we understand the critical challenges impacting your institution's educational efficacy and student retention. Specifically, you are contending with:\n*   **Low Student Course Completion:** An alarmingly low course completion rate of only 18% indicates significant student disengagement and barriers to success.\n*   **Lack of Personalized Learning:** The current \"one-size-fits-all\" approach fails to cater to diverse student needs, leading to suboptimal learning experiences and outcomes.\n*   **Inefficient Instructor Feedback:** Manual feedback processes are severely delayed, taking an average of 5 days, which hinders timely student progression and instructor capacity.\n\n## Proposed Solution\nOur AI-powered platform is designed to directly address these pain points by fostering a dynamic, supportive, and efficient learning environment:\n\n*   **AI-Powered Nudges for Engagement:** Our system continuously analyzes student performance, activity, and engagement patterns to deliver personalized, timely AI nudges. These intelligent prompts encourage students to stay on track, revisit challenging concepts, and utilize available resources, directly driving your goal of increasing course completion to 60%.\n*   **Adaptive Learning Path Engine:** Leveraging advanced AI algorithms, our platform builds truly adaptive learning paths for each student. It assesses individual learning styles, prior knowledge, real-time progress, and performance data to dynamically adjust content sequencing, recommend supplementary materials, and tailor assessments, moving beyond the \"one-size-fits-all\" model.\n*   **Automated, Intelligent Feedback System:** We will implement an AI-driven feedback mechanism that provides immediate, constructive, and personalized feedback on assignments, quizzes, and even open-ended responses. This automation will drastically reduce feedback time from 5 days to within 24 hours, ensuring students receive prompt guidance and instructors can focus on high-value interactions.\n\n## Why Choose Us\n1.  **EdTech Specialization & Pedagogy Focus:** We are not just an AI company; we are EdTech experts. Our solutions are built with a deep understanding of educational pedagogy, student psychology, and instructional design principles, ensuring AI enhances learning, not just automates it.\n2.  **Proven Impact on Learning Outcomes:** Our AI has a track record of demonstrably improving student retention, engagement, and academic performance in diverse educational settings, offering quantifiable ROI.\n3.  **Seamless Integration & User Experience:** Our platform is designed for effortless integration with existing Learning Management Systems (LMS) and offers intuitive interfaces for both students and educators, minimizing disruption and maximizing adoption.\n\n### Basic Plan\n**Description:** Ideal for institutions seeking to initiate AI-driven engagement and efficiency. Includes core AI nudges for progress tracking, basic adaptive content recommendations, and automated feedback for multiple-choice and short-answer questions. Supports up to 5 courses and 500 active students.\n**Price:** $4,999/year\n\n### Pro Plan\n**Description:** Our most popular offering, designed for comprehensive transformation. Includes all Basic Plan features, plus advanced adaptive learning path generation, generative AI feedback for essay and open-ended questions, advanced analytics dashboards, and priority support. Supports up to 20 courses and 2,000 active students.\n**Price:** $9,499/year\n\n### Enterprise Plan\n**Description:** Tailored for large institutions requiring custom integrations, unlimited scalability, and dedicated strategic partnership. Includes all Pro Plan features, custom AI module development, dedicated account management, on-site training, and bespoke reporting capabilities.\n**Price:** Contact Us for Custom Quote\n\n## Implementation Timeline\n**Phase 1: Discovery & Integration Planning (2 weeks)**\n*   Detailed requirements gathering and LMS compatibility assessment.\n*   Integration strategy formulation and data mapping.\n*   Project kickoff meeting and team introductions.\n\n**Phase 2: Platform Setup & Data Synchronization (3 weeks)**\n*   Configuration of our AI platform to your institution's specific needs.\n*   Secure synchronization of student data and course content from your LMS.\n*   Initial setup of AI nudge rules and feedback parameters.\n\n**Phase 3: Pilot Program & Instructor Training (4 weeks)**\n*   Deployment of the solution to a designated pilot group of courses/instructors/students.\n*   Comprehensive training sessions for instructors and administrators on platform usage.\n*   Collection of initial feedback and performance metrics from the pilot.\n\n**Phase 4: Full Rollout & Optimization (Ongoing)**\n*   Gradual rollout to all desired courses and students based on pilot success.\n*   Continuous monitoring, performance tuning, and AI model refinement.\n*   Regular check-ins and support from our dedicated success team.\n\n## ROI & Expected Outcomes\nBy partnering with us, you can expect significant, measurable returns on your investment:\n*   **Increased Course Completion:** Achieve a remarkable increase in course completion rates from 18% to our target of 60%.\n*   **Enhanced Learning Efficacy:** Transition from a \"one-size-fits-all\" model to truly personalized, adaptive learning paths, leading to deeper understanding and improved student satisfaction.\n*   **Improved Operational Efficiency:** Reduce instructor feedback time from 5 days to under 24 hours, significantly freeing up faculty time and improving student engagement.\n*   **Higher Student Retention:** Engaged and successful students are more likely to complete courses and continue their education, contributing to overall institutional growth.\n\n## Terms & Conditions\nThis proposal is valid for 30 days from the date of issuance. Pricing is subject to annual renewal and may be adjusted for inflation or significant scope changes. Payment terms typically require 50% upfront for annual subscriptions, with the remainder due within 30 days. Data privacy and security are paramount, adhering to all relevant educational and privacy regulations (e.g., FERPA, GDPR). A detailed Service Level Agreement (SLA) will be provided upon agreement."
+      "generated_at": "2026-03-07",
+      "summary": "WealthAxis Capital is currently burdened by a 7-day KYC verification process, significant analyst time wasted on manual report generation, and a reactive fraud detection system leading to substantial ...",
+      "roi": 222,
+      "payback": 7
     },
     "follow_up_email": {
-      "subject": "Following Up: Enhancing Student Course Completion",
-      "body": "Subject: Following Up: Enhancing Student Course Completion\n\nDear Avanish,\n\nI hope this email finds you well. I wanted to follow up on the proposal we sent addressing your EdTech needs.\n\nWe recognize the challenge of your 18% student course completion rate. Our solutions are specifically designed to tackle this by creating more engaging and personalized learning experiences.\n\nTo discuss how our strategies can help significantly improve your completion rates and explore your specific requirements further, I would be grateful for a 30-minute discovery call. Please let me know your availability.\n\nThank you for your time.\n\nBest regards,\n[Your Name]",
+      "subject": "Following Up: WealthAxis Capital Proposal - Accelerating Growth",
+      "body": "Subject: Following Up: WealthAxis Capital Proposal - Accelerating Growth\n\nHi [Client Name],\n\nHope this email finds you well.\n\nI'm following up on the proposal we recently shared for WealthAxis Capital. We understand the critical impact of lengthy KYC verification on high-value leads and the analyst time spent on manual reporting.\n\nOur solution is designed to directly address these challenges, offering significant efficiency gains and lead retention. As detailed, we project a rapid payback period of just 7 months, ensuring a swift return on your investment.\n\nI'd appreciate the opportunity to schedule a brief 30-minute discovery call this week to answer any questions and further explore how we can help WealthAxis Capital accelerate its growth.\n\nBest regards,\n[Your Name]",
       "status": "Draft — Not Sent"
     },
     "deal": {
-      "stage": "Closed Lost",
-      "probability": 0,
-      "weighted_value": 0,
+      "stage": "Proposal Sent",
+      "probability": 55,
+      "weighted_value": 165000,
       "next_action": "Follow-up in 3 days"
     }
   }

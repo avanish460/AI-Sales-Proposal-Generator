@@ -1,135 +1,71 @@
-import json
-import csv
+"""
+utils.py — CRM helpers for AI Sales Intelligence Platform
+  - _build_crm_entry()   : proposal + client_data → CRM dict
+  - _entries_to_csv()    : list of CRM entries → CSV bytes
+  - _load_crm()          : JSON file → list
+  - _save_crm()          : list → JSON file
+"""
+
 import io
-import re
+import csv
+import json
 from datetime import datetime
-from fpdf import FPDF
-
-# PDF
-
-def create_pdf(proposal_text: str, client_name: str) -> str:
-    pdf = FPDF()
-    pdf.add_page()
-    try:
-        pdf.add_font("Roboto", "", "Roboto-Regular.ttf")
-        pdf.set_font("Roboto", size=16)
-    except Exception:
-        pdf.set_font("Helvetica", size=16)
-
-    pdf.cell(200, 10, txt=f"Proposal for {client_name}", ln=True, align="C")
-    pdf.ln(10)
-
-    try:
-        pdf.set_font("Roboto", size=11)
-    except Exception:
-        pdf.set_font("Helvetica", size=11)
-
-    pdf.multi_cell(0, 10, txt=proposal_text)
-
-    filename = f"Proposal_{client_name.replace(' ', '_')}.pdf"
-    pdf.output(filename)
-    return filename
 
 
-# CRM JSON
+def _build_crm_entry(proposal: dict, client_data: dict) -> dict:
+    """Convert a generated proposal + client data into a CRM entry dict."""
+    company  = client_data.get("company_name", "")
+    industry = client_data.get("industry", "")
+    budget   = f"${client_data.get('budget_min',0):,} – ${client_data.get('budget_max',0):,}"
 
-def create_crm_json(client_name: str, sector: str, budget: str, proposal_text: str) -> str:
-    """Base CRM entry as JSON string (original function — kept intact)."""
-    crm_data = {
+    email_raw = proposal.get("_followup_email", "")
+    subject   = next(
+        (l.split(":", 1)[1].strip() for l in email_raw.split("\n")
+         if l.lower().startswith("subject:")), ""
+    )
+    inv = proposal.get(
+        "total_investment",
+        int((client_data.get("budget_min", 0) + client_data.get("budget_max", 0)) / 2)
+    )
+
+    return {
         "lead_info": {
-            "name":            client_name,
-            "industry":        sector,
+            "name":            company,
+            "industry":        industry,
             "estimated_value": budget,
+            "budget_num":      inv,
             "status":          "Proposal Sent",
+            "added_at":        datetime.now().strftime("%Y-%m-%d %H:%M"),
         },
         "proposal_metadata": {
             "generated_at": datetime.now().strftime("%Y-%m-%d"),
-            "summary":      proposal_text[:300] + ("..." if len(proposal_text) > 300 else ""),
-            "file_type":    "PDF",
+            "summary":      proposal.get("executive_summary", "")[:220] + "...",
+            "roi":          proposal.get("roi_percentage", 0),
+            "payback":      proposal.get("payback_period_months", "N/A"),
+        },
+        "follow_up_email": {
+            "subject": subject,
+            "body":    email_raw,
+            "status":  "Draft — Not Sent",
+        },
+        "deal": {
+            "stage":          "Proposal Sent",
+            "probability":    55,
+            "weighted_value": int(inv * 0.55),
+            "next_action":    "Follow-up in 3 days",
         },
     }
-    return json.dumps(crm_data, indent=4, ensure_ascii=False)
 
 
-def build_full_crm_entry(
-    client_name: str,
-    sector: str,
-    budget: str,
-    proposal_text: str,
-    followup_email: str = "",
-) -> dict:
-    """
-    Builds on create_crm_json() and adds:
-    - follow_up_email (full body — not truncated)
-    - pricing_tiers  (parsed from proposal)
-    - deal stage / probability / weighted value
-    - timestamps
-    """
-    base = json.loads(create_crm_json(client_name, sector, budget, proposal_text))
-
-    # budget → number
-    nums = re.findall(r"[\d,]+", str(budget).replace("k", "000").replace("K", "000"))
-    budget_num = (
-        int(sum(int(n.replace(",", "")) for n in nums) / max(len(nums), 1))
-        if nums
-        else 0
-    )
-
-    # pricing tiers 
-    # pricing = {}
-    # for tier in ["Basic", "Pro", "Enterprise"]:
-    #     m = re.search(
-    #         rf"(?:###?\s*{tier}[^\n]*\n)(.*?)(?=###|\Z)",
-    #         proposal_text,
-    #         re.DOTALL | re.IGNORECASE,
-    #     )
-    #     if m:
-    #         pricing[tier] = m.group(1).strip()  # full text, no truncation
-
-    # ── email subject ────────────────────────────────────────────────────────
-    subject = ""
-    for line in followup_email.split("\n"):
-        if line.lower().startswith("subject:"):
-            subject = line.split(":", 1)[1].strip()
-            break
-
-    base.update(
-        {
-            "lead_info": {
-                **base["lead_info"],
-                "budget_num": budget_num,
-                "added_at":   datetime.now().strftime("%Y-%m-%d %H:%M"),
-            },
-            "proposal_metadata": {
-                **base["proposal_metadata"],
-                # "full_proposal": proposal_text,          # full text saved
-            },
-            # "follow_up_email": {
-            #     "subject": subject,
-            #     "body":    followup_email,               # full email saved
-            #     "status":  "Draft — Not Sent",
-            # },
-            # "pricing_tiers": pricing,
-            "deal": {
-                "stage":          "Proposal Sent",
-                "probability":    55,
-                "weighted_value": int(budget_num * 0.55),
-                "next_action":    "Follow-up in 3 days",
-            },
-        }
-    )
-    return base
-
-# CSV export
-
-def entries_to_csv(entries: list) -> bytes:
+def _entries_to_csv(entries: list) -> bytes:
+    """Convert list of CRM entries to CSV bytes for download."""
     if not entries:
         return b""
-    buf = io.StringIO()
+    buf    = io.StringIO()
     fields = [
-        "Name", "Industry", "Budget", "Est. Value",
-        "Status", "Stage", "Probability", "Weighted Value",
-        "Email Subject", "Added At", "Summary",
+        "Name", "Industry", "Budget", "Est. Value", "Status", "Stage",
+        "Probability", "Weighted Value", "ROI %", "Payback", "Email Subject",
+        "Added At", "Summary",
     ]
     w = csv.DictWriter(buf, fieldnames=fields)
     w.writeheader()
@@ -138,39 +74,35 @@ def entries_to_csv(entries: list) -> bytes:
         deal = e.get("deal", {})
         meta = e.get("proposal_metadata", {})
         fu   = e.get("follow_up_email", {})
-        w.writerow(
-            {
-                "Name":           li.get("name", ""),
-                "Industry":       li.get("industry", ""),
-                "Budget":         li.get("estimated_value", ""),
-                "Est. Value":     li.get("budget_num", 0),
-                "Status":         li.get("status", ""),
-                "Stage":          deal.get("stage", ""),
-                "Probability":    deal.get("probability", ""),
-                "Weighted Value": deal.get("weighted_value", ""),
-                "Email Subject":  fu.get("subject", "") if isinstance(fu, dict) else "",
-                "Added At":       li.get("added_at", ""),
-                "Summary":        meta.get("summary", ""),
-            }
-        )
+        w.writerow({
+            "Name":           li.get("name", ""),
+            "Industry":       li.get("industry", ""),
+            "Budget":         li.get("estimated_value", ""),
+            "Est. Value":     li.get("budget_num", 0),
+            "Status":         li.get("status", ""),
+            "Stage":          deal.get("stage", ""),
+            "Probability":    deal.get("probability", ""),
+            "Weighted Value": deal.get("weighted_value", ""),
+            "ROI %":          meta.get("roi", ""),
+            "Payback":        meta.get("payback", ""),
+            "Email Subject":  fu.get("subject", "") if isinstance(fu, dict) else "",
+            "Added At":       li.get("added_at", ""),
+            "Summary":        meta.get("summary", ""),
+        })
     return buf.getvalue().encode()
 
-# Persistent CRM (file-backed, survives Streamlit reruns within same session)
 
-CRM_FILE = "crm_data.json"
-
-
-def load_crm() -> list:
-    """Load CRM entries from disk. Returns [] on first run or errors."""
+def _load_crm(path: str = "crm_data.json") -> list:
+    """Load CRM entries from JSON file. Returns [] if file missing or corrupt."""
     try:
-        with open(CRM_FILE, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return data if isinstance(data, list) else []
+            return data if isinstance(data, list) else []
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
 
-def save_crm(entries: list) -> None:
-    """Persist CRM entries to disk."""
-    with open(CRM_FILE, "w", encoding="utf-8") as f:
+def _save_crm(entries: list, path: str = "crm_data.json") -> None:
+    """Persist CRM entries to JSON file."""
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(entries, f, indent=2, ensure_ascii=False)

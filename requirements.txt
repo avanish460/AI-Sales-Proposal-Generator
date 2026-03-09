@@ -1,0 +1,19 @@
+# AI Sales Intelligence Platform — Requirements
+# Install: pip install -r requirements.txt
+
+# ── Gemini LLM ────────────────────────────────
+google-genai>=1.0.0
+
+# ── RAG Stack ─────────────────────────────────
+faiss-cpu>=1.7.4
+sentence-transformers>=2.6.0
+
+# ── Environment Variables ─────────────────────
+python-dotenv>=1.0.0
+
+# ── Data ──────────────────────────────────────
+numpy>=1.24.0
+pandas>=2.0.0
+
+# ── UI ────────────────────────────────────────
+streamlit>=1.35.0
