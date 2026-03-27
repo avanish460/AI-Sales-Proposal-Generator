@@ -1,6 +1,60 @@
 [
   {
     "lead_info": {
+      "name": "MediCare Plus Clinics",
+      "industry": "Healthcare",
+      "estimated_value": "$200,000 – $400,000",
+      "budget_num": 380000,
+      "status": "Negotiation",
+      "added_at": "2026-03-20 21:21"
+    },
+    "proposal_metadata": {
+      "generated_at": "2026-03-20",
+      "summary": "MediCare Plus Clinics faces critical operational inefficiencies in patient onboarding, manual documentation, and high no-show rates, directly impacting patient satisfaction and daily revenue. This proposal outlines a com...",
+      "roi": 179,
+      "payback": 7
+    },
+    "follow_up_email": {
+      "subject": "Follow-up: Enhancing Efficiency & 179% ROI for MediCare Plus Clinics",
+      "body": "Subject: Follow-up: Enhancing Efficiency & 179% ROI for MediCare Plus Clinics\n\nHi [Client Name],\n\nIt was a pleasure discussing the proposal for MediCare Plus Clinics. I understand that streamlining your patient onboarding process, currently at 45 minutes, and reducing the 40% of doctor time spent on manual documentation are top priorities.\n\nAs outlined in the proposal, our solution is specifically designed to address these challenges and offers a significant **179% ROI**.\n\nI'd be happy to schedule a brief 30-minute discovery call this week to discuss any questions you might have or explore how we can tailor this further. Please let me know what time works best for you.\n\nBest regards,\n[Your Name]",
+      "status": "Draft — Not Sent"
+    },
+    "deal": {
+      "stage": "Negotiation",
+      "probability": 75,
+      "weighted_value": 285000,
+      "next_action": "Follow-up in 3 days"
+    }
+  },
+  {
+    "lead_info": {
+      "name": " Apollo Health Network",
+      "industry": "Healthcare",
+      "estimated_value": "$500,000 – $800,000",
+      "budget_num": 580000,
+      "status": "Negotiation",
+      "added_at": "2026-03-09 23:04"
+    },
+    "proposal_metadata": {
+      "generated_at": "2026-03-09",
+      "summary": "Apollo Health Network faces critical challenges in multi-hospital coordination, lab report turnaround times, and patient readmission rates, directly impacting operational efficiency and patient outcomes. This proposal ou...",
+      "roi": 186,
+      "payback": 7
+    },
+    "follow_up_email": {
+      "subject": "Following Up: Apollo Health Network Proposal",
+      "body": "Subject: Following Up: Apollo Health Network Proposal\n\nHope this email finds you well. I wanted to follow up on the proposal we sent regarding improving multi-hospital coordination at Apollo Health Network.\n\nWe understand the challenges you face with coordination taking 3x longer and the impact of 48-hour lab report turnaround times. Our proposed solution is designed to directly address these pain points, offering a clear path to significantly streamlined operations. We're confident it can deliver a strong return, highlighted by an impressive 7-month payback period.\n\nI'd be happy to schedule a brief 30-minute discovery call this week to discuss any questions you may have and explore how we can tailor this further for Apollo Health Network. Please let me know what time works best for you.\n\nBest regards,\n[Your Name]",
+      "status": "Draft — Not Sent"
+    },
+    "deal": {
+      "stage": "Negotiation",
+      "probability": 75,
+      "weighted_value": 435000,
+      "next_action": "Follow-up in 3 days"
+    }
+  },
+  {
+    "lead_info": {
       "name": "WealthAxis Capital",
       "industry": "Fintech",
       "estimated_value": "$300,000 – $300,000",
